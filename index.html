@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Video Platform</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+        .video-container {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: black;
+        }
+        video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .heart {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: white;
+            font-size: 24px;
+            text-shadow: 1px 1px 2px black;
+        }
+        .arrow {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.7);
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 24px;
+            transition: background-color 0.3s;
+        }
+        .arrow:hover {
+            background-color: rgba(255, 255, 255, 1);
+        }
+        .arrow.left { left: 10px; top: 50%; transform: translateY(-50%); }
+        .arrow.right { right: 10px; top: 50%; transform: translateY(-50%); }
+        .arrow.up { top: 10px; left: 50%; transform: translateX(-50%); }
+        .arrow.down { bottom: 10px; left: 50%; transform: translateX(-50%); }
+
+        @media (max-width: 768px) {
+            .heart {
+                font-size: 20px;
+            }
+            .arrow {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+        }
+        @media (max-width: 480px) {
+            .heart {
+                font-size: 18px;
+            }
+            .arrow {
+                width: 30px;
+                height: 30px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="video-container" id="videoContainer">
+        <video id="videoPlayer" autoplay muted loop>
+            <source src="video1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="heart" id="heartCount">❤️ 30K</div>
+        <button class="arrow left" onclick="changeVideo(-1)">⬅️</button>
+        <button class="arrow right" onclick="changeVideo(1)">➡️</button>
+        <button class="arrow up" onclick="changeVideo(-1)">⬆️</button>
+        <button class="arrow down" onclick="changeVideo(1)">⬇️</button>
+    </div>
+
+    <script>
+        const videos = [
+            { src: 'video1.mp4', hearts: Math.floor(Math.random() * (3000000 - 30000 + 1)) + 30000 },
+            { src: 'video2.mp4', hearts: Math.floor(Math.random() * (3000000 - 30000 + 1)) + 30000 },
+            { src: 'video3.mp4', hearts: Math.floor(Math.random() * (3000000 - 30000 + 1)) + 30000 }
+        ];
+        let currentVideoIndex = 0;
+
+        const videoPlayer = document.getElementById('videoPlayer');
+        const heartCount = document.getElementById('heartCount');
+
+        function loadVideo(index) {
+            videoPlayer.src = videos[index].src;
+            heartCount.textContent = `❤️ ${videos[index].hearts}`;
+            videoPlayer.play();
+        }
+
+        function changeVideo(direction) {
+            currentVideoIndex += direction;
+            if (currentVideoIndex < 0) currentVideoIndex = videos.length - 1;
+            if (currentVideoIndex >= videos.length) currentVideoIndex = 0;
+            loadVideo(currentVideoIndex);
+        }
+
+        // 비디오 재생/일시 정지 기능
+        const videoContainer = document.getElementById('videoContainer');
+        videoContainer.addEventListener('click', () => {
+            if (videoPlayer.paused) {
+                videoPlayer.play();
+            } else {
+                videoPlayer.pause();
+            }
+        });
+
+        loadVideo(currentVideoIndex);
+        
+        // 스크롤 이벤트에 따라 비디오 변경
+        window.addEventListener('wheel', (event) => {
+            if (event.deltaY > 0) {
+                changeVideo(1); // 아래로 스크롤
+            } else {
+                changeVideo(-1); // 위로 스크롤
+            }
+        });
+    </script>
+</body>
+</html>

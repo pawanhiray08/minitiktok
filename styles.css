@@ -1,0 +1,35 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* Prevent scrolling */
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive columns */
+    grid-template-rows: repeat(auto-fill, minmax(200px, 1fr)); /* Responsive rows */
+    height: 100vh; /* Full viewport height */
+    overflow: auto; /* Allow scrolling */
+}
+
+.video-container {
+    position: relative; /* To position heart button absolutely */
+}
+
+video {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.heart-container {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 5px;
+    padding: 5px;
+}
